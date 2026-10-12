@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Studio</title>
+    <link rel="stylesheet" href="pomodoro.css">
+</head>
+
+<body>
+
+    <main id="pomodoro-app">
+
+        <!-- Header -->
+        <header class="app-header">
+
+            <h1>Pomodoro Studio</h1>
+
+            <!-- Language Selector -->
+            <button
+                id="language-button"
+                type="button"
+                aria-label="Change language"
+                title="Change language"
+            >
+                🌐 <span id="current-language">EN</span>
+            </button>
+
+        </header>
+
+        <!-- Settings -->
+        <section id="settings">
+
+            <h2 data-i18n="settings">Settings</h2>
+
+            <!-- Visual Theme -->
+            <label for="theme" data-i18n="theme">
+                Visual Theme:
+            </label>
+
+            <select id="theme">
+                <option value="vaporwave">Vaporwave</option>
+                <option value="zen">Zen Flip Clock</option>
+                <option value="rain">Rain Mode</option>
+            </select>
+
+            <!-- Clock Type -->
+            <label for="clock-type" data-i18n="clockType">
+                Clock Type:
+            </label>
+
+            <select id="clock-type">
+                <option value="digital" data-i18n="digital">
+                    Digital
+                </option>
+                <option value="analog" data-i18n="analog">
+                    Analog
+                </option>
+            </select>
+
+            <!-- Pomodoro Cycles -->
+            <label for="cycles" data-i18n="cycles">
+                Number of Cycles:
+            </label>
+
+            <input
+                type="number"
+                id="cycles"
+                min="1"
+                max="12"
+                value="4"
+            >
+
+        </section>
+
+        <!-- Timer -->
+        <section id="timer">
+
+            <h2 id="session-type" data-i18n="focus">
+                Focus Session
+            </h2>
+
+            <!-- Digital Clock -->
+            <div id="digital-clock">
+                <span id="minutes">25</span>
+                <span>:</span>
+                <span id="seconds">00</span>
+            </div>
+
+            <!-- Analog Clock -->
+            <div id="analog-clock" hidden>
+                <!-- Analog clock will be implemented here -->
+            </div>
+
+            <!-- Cycle Counter -->
+            <p id="cycle-counter">
+                Cycle 1 of 4
+            </p>
+
+        </section>
+
+        <!-- Timer Controls -->
+        <section id="controls">
+
+            <button
+                id="start-button"
+                type="button"
+                data-i18n="start"
+            >
+                Start
+            </button>
+
+            <button
+                id="pause-button"
+                type="button"
+                data-i18n="pause"
+            >
+                Pause
+            </button>
+
+            <button
+                id="reset-button"
+                type="button"
+                data-i18n="reset"
+            >
+                Reset
+            </button>
+
+        </section>
+
+    </main>
+
+    <script src="pomodoro.js"></script>
+
+</body>
+</html>

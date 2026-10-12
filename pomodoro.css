@@ -1,0 +1,439 @@
+/* =========================================
+   POMODORO STUDIO — GLOBAL STYLES
+   Default theme: Vaporwave
+   ========================================= */
+
+:root {
+    color-scheme: dark;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-synthesis: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    --text: #fff5ff;
+    --muted: #e6c9ec;
+    --accent: #ff78d8;
+    --panel: rgba(30, 14, 62, 0.76);
+    --border: rgba(255, 184, 249, 0.28);
+    --field: rgba(18, 9, 41, 0.85);
+    --clock-card: #25133d;
+    --button-text: #190c2c;
+
+    min-height: 100vh;
+    margin: 0;
+    padding: 48px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow-x: hidden;
+    isolation: isolate;
+    background: linear-gradient(145deg, #100b2b 5%, #3a1765 53%, #932c85 100%);
+    color: var(--text);
+    transition: background 0.5s ease, color 0.3s ease;
+}
+
+/* Decorative horizon for the Vaporwave theme */
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    pointer-events: none;
+    z-index: -1;
+}
+
+body::before {
+    left: -30%;
+    bottom: -26%;
+    width: 160%;
+    height: 65%;
+    background-image:
+        linear-gradient(rgba(247, 105, 221, 0.27) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(247, 105, 221, 0.27) 1px, transparent 1px);
+    background-size: 60px 60px;
+    transform: perspective(300px) rotateX(62deg);
+    mask-image: linear-gradient(to bottom, transparent, #000 35%);
+}
+
+body::after {
+    right: 8%;
+    top: 8%;
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background: linear-gradient(#ffd5a6, #ff77ac 55%, #b341c6);
+    opacity: 0.7;
+    box-shadow: 0 0 90px rgba(255, 92, 188, 0.28);
+}
+
+/* =========================================
+   THEMES — to be switched by JavaScript
+   document.body.dataset.theme = "zen";
+   ========================================= */
+
+body[data-theme="zen"] {
+    --text: #ffffff;
+    --muted: #aaaaaa;
+    --accent: #ffffff;
+    --panel: #0c0c0c;
+    --border: #303030;
+    --field: #151515;
+    --clock-card: #1b1b1b;
+    --button-text: #000000;
+
+    background: #000000;
+}
+
+body[data-theme="zen"]::before,
+body[data-theme="zen"]::after {
+    display: none;
+}
+
+body[data-theme="rain"] {
+    --text: #edf5ff;
+    --muted: #a8c1d5;
+    --accent: #93d8ff;
+    --panel: rgba(8, 23, 39, 0.82);
+    --border: rgba(161, 206, 238, 0.25);
+    --field: rgba(7, 19, 34, 0.92);
+    --clock-card: #152a40;
+    --button-text: #071b2b;
+
+    background: linear-gradient(160deg, #050d18, #17334e 62%, #314d62);
+}
+
+/* Soft rain streaks, made only with CSS */
+body[data-theme="rain"]::before {
+    display: block;
+    inset: -100% 0 0;
+    width: 100%;
+    height: 200%;
+    transform: none;
+    mask-image: none;
+    background-image: repeating-linear-gradient(
+        105deg,
+        transparent 0 39px,
+        rgba(199, 228, 249, 0.15) 40px,
+        transparent 41px,
+        transparent 88px
+    );
+    background-size: 100% 180px;
+    animation: rainfall 13s linear infinite;
+}
+
+body[data-theme="rain"]::after {
+    display: block;
+    top: 5%;
+    right: 0;
+    width: 60%;
+    height: 70%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(121, 185, 228, 0.12), transparent 70%);
+    box-shadow: none;
+}
+
+@keyframes rainfall {
+    from { background-position: 0 0; }
+    to   { background-position: 0 360px; }
+}
+
+/* =========================================
+   MAIN LAYOUT
+   ========================================= */
+
+#pomodoro-app {
+    width: min(100%, 940px);
+    display: grid;
+    grid-template-columns: minmax(250px, 310px) minmax(0, 1fr);
+    gap: 22px;
+    position: relative;
+    z-index: 1;
+}
+
+.app-header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 0 4px 8px;
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    letter-spacing: -0.04em;
+}
+
+#language-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+#settings,
+#timer,
+#controls {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(14px);
+}
+
+/* =========================================
+   SETTINGS PANEL
+   ========================================= */
+
+#settings {
+    grid-column: 1;
+    grid-row: 2 / 4;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+}
+
+#settings h2 {
+    margin: 0 0 16px;
+    font-size: 1.25rem;
+}
+
+#settings label {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+#settings select,
+#settings input {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--field);
+    color: var(--text);
+    font: inherit;
+}
+
+#settings select {
+    cursor: pointer;
+}
+
+#settings input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+/* =========================================
+   TIMER — DIGITAL + ANALOG
+   ========================================= */
+
+#timer {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 42px 24px 34px;
+    min-height: 330px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    text-align: center;
+}
+
+#session-type {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+}
+
+#digital-clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    font-size: clamp(3.4rem, 8vw, 6rem);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.06em;
+    line-height: 1;
+}
+
+/* Two flip-clock cards, one for minutes and one for seconds */
+#minutes,
+#seconds {
+    position: relative;
+    min-width: 1.8em;
+    padding: 20px 14px;
+    background: var(--clock-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+#minutes::after,
+#seconds::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.22);
+    pointer-events: none;
+}
+
+/* We will add the flip animation class from JavaScript later */
+.flip-change {
+    animation: flip-change 0.35s ease-in-out;
+}
+
+@keyframes flip-change {
+    0%   { transform: rotateX(0deg); }
+    50%  { transform: rotateX(-14deg); }
+    100% { transform: rotateX(0deg); }
+}
+
+#cycle-counter {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+/* Container ready for the future analog clock implementation */
+#analog-clock {
+    width: min(240px, 70vw);
+    aspect-ratio: 1;
+    position: relative;
+    border: 5px solid var(--accent);
+    border-radius: 50%;
+    background: var(--field);
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.22);
+}
+
+/* Ensure HTML's hidden attribute always works */
+[hidden] {
+    display: none !important;
+}
+
+/* =========================================
+   CONTROLS
+   ========================================= */
+
+#controls {
+    grid-column: 2;
+    grid-row: 3;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 22px;
+}
+
+#controls button {
+    min-width: 110px;
+    padding: 13px 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--field);
+    color: var(--text);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+#start-button {
+    background: var(--accent) !important;
+    color: var(--button-text) !important;
+    border-color: transparent !important;
+}
+
+#controls button:hover,
+#language-button:hover {
+    opacity: 0.85;
+}
+
+#controls button:active {
+    transform: scale(0.97);
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+@media (max-width: 720px) {
+    body {
+        padding: 26px 14px;
+        align-items: flex-start;
+    }
+
+    #pomodoro-app {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .app-header,
+    #settings,
+    #timer,
+    #controls {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    /* Put the timer first on mobile */
+    #timer { order: 1; min-height: 290px; padding: 36px 14px; }
+    #controls { order: 2; }
+    #settings { order: 3; padding: 22px; }
+
+    #digital-clock {
+        gap: 6px;
+        font-size: clamp(2.8rem, 12vw, 5rem);
+    }
+
+    #minutes,
+    #seconds {
+        padding: 17px 10px;
+    }
+
+    #controls button {
+        min-width: 84px;
+        flex: 1;
+        padding: 12px 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
